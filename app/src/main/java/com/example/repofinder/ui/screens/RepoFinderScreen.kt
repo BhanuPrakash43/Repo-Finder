@@ -2,25 +2,27 @@ package com.example.repofinder.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.repofinder.model.RepoViewModel
 
+@ExperimentalMaterial3Api
 @Composable
-fun RepoFinderScreen() {
+fun RepoFinderScreen(viewModel: RepoViewModel) {
     var searchQuery by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+            .padding(16.dp)
     ) {
         Text(
             text = "Repo Finder",
@@ -31,27 +33,54 @@ fun RepoFinderScreen() {
         // Search Bar
         SearchBar(
             searchQuery = searchQuery,
-            onSearchQueryChange = { searchQuery = it }
+            onSearchQueryChange = {
+                searchQuery = it
+                if (searchQuery.isNotEmpty()) {
+                    viewModel.searchUser(searchQuery)
+                }
+            }
         )
+
+        // Display GitHub User Details
+        viewModel.user?.let { user ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(Color.LightGray, RoundedCornerShape(12.dp)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Username: ${user.login}", fontSize = 20.sp)
+                Text(text = "Public Repos: ${user.public_repos}", fontSize = 16.sp)
+                Text(text = "Followers: ${user.followers}", fontSize = 16.sp)
+                Text(text = "Following: ${user.following}", fontSize = 16.sp)
+            }
+        }
     }
 }
 
+@ExperimentalMaterial3Api
 @Composable
 fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
-    Box(
+
+    TextField(
+        value = searchQuery,
+        onValueChange = { onSearchQueryChange(it) },
+        placeholder = { Text("Search GitHub username...") },
+        singleLine = true,
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)
             .padding(8.dp)
-            .background(Color.LightGray, shape = MaterialTheme.shapes.medium)
-    ) {
-        BasicTextField(
-            value = searchQuery,
-            onValueChange = { onSearchQueryChange(it) },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            singleLine = true
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.LightGray),
+        textStyle = TextStyle(
+            fontSize = 20.sp
+        ),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = Color.LightGray,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
         )
-    }
+    )
 }
