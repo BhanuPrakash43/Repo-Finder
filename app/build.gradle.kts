@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // ViewModel integration for Jetpack Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
@@ -79,7 +80,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
 
-    // Test dependencies
+    // For Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
