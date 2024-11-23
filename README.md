@@ -21,7 +21,7 @@
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/BhanuPrakash43/Repo-Finder
+   git clone https://github.com/BhanuPrakash43/Repo-Finder.git
 
 2. Open the project in Android Studio.
 3. Sync the Gradle files and build the project.
